@@ -30,6 +30,9 @@
   delay: 10
   loop: "{{ deploy.results }}"
 
+- debug:
+    var: instances
+
 - name: waiting for server to come online
   wait_for:
     host: "{{ item.instance_data.public_ip }}"
