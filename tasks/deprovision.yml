@@ -8,14 +8,11 @@
     instance_names: "{{ gce_prefix }}-{{ item.name }}"
     zone: "{{ gce_zone }}"
     state: absent
-  async: 7200
-  poll: 0
+  #async: 7200
+  #poll: 0
   register: deploy
   loop: "{{ nodes }}"
   when: nodes is defined
-
-- pause:
-    minutes: 2
 
 - name: debug deploy
   debug:
@@ -24,14 +21,6 @@
 - name: debug deploy.results
   debug:
     var: deploy.results
-
-- name: test instance completion
-  async_status: jid="{{ item.ansible_job_id }}"
-  register: instances
-  loop: "{{ deploy.results }}"
-
-- debug:
-    var: instances
 
 #- name: wait for instance deletion to complete
 #  async_status: jid="{{ item.ansible_job_id }}"
