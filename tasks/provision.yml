@@ -11,11 +11,26 @@
     image: "{{ item.image }}"
     state: present
     metadata: '{"app_name":"{{ item.app_name }}", "role":"{{ item.role }}" }'
+    tags:
+      - app_name_{{ item.app_name }}
+      - role_{{ item.role }}
   async: 7200
   poll: 0
   register: deploy
   loop: "{{ nodes }}"
   when: nodes is defined
+
+- debug:
+    var: deploy.results
+
+- name: test instances status
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: test_instances
+  loop: "{{ deploy.results }}"
+
+- debug:
+    var: test_instances
 
 - name: wait for instance creation to complete
   async_status:
