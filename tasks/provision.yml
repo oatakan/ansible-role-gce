@@ -14,23 +14,12 @@
     tags:
       - app-name-{{ item.app_name | replace('_','-') }}
       - role-{{ item.role | replace('_','-') }}
+      - "{{ item.network_tag | replace('_','-') }}"
   async: 7200
   poll: 0
   register: deploy
   loop: "{{ nodes }}"
   when: nodes is defined
-
-- debug:
-    var: deploy.results
-
-- name: test instances status
-  async_status:
-    jid: "{{ item.ansible_job_id }}"
-  register: test_instances
-  loop: "{{ deploy.results }}"
-
-- debug:
-    var: test_instances
 
 - name: wait for instance creation to complete
   async_status:
