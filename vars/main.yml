@@ -1,0 +1,5 @@
+---
+
+service_account_email: "{{ lookup('env', 'GCE_EMAIL') }}"
+credentials_file: "{{ lookup('env', 'GCE_PEM_FILE_PATH') }}"
+project_id: "{{ lookup('env', 'GCE_PROJECT') }}"
