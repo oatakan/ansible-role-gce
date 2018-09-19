@@ -17,7 +17,7 @@
 - name: wait for instance deletion to complete
   async_status: jid="{{ item.ansible_job_id }}"
   register: instances
-  until: instances.finished == 0
+  until: instances.finished is not defined
   retries: "{{ instance_wait_retry_limit }}"
   delay: 10
   with_items: "{{ deploy.results }}"
