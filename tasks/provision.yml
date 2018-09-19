@@ -30,5 +30,4 @@
   when:
     - deploy.results is defined
     - nodes is defined
-    - instance_data is defined
     - item.1.public_ip is defined
