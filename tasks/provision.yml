@@ -12,8 +12,8 @@
     state: present
     metadata: '{"app_name":"{{ item.app_name }}", "role":"{{ item.role }}" }'
     tags:
-      - app_name_{{ item.app_name }}
-      - role_{{ item.role }}
+      - app-name-{{ item.app_name | replace('_','-') }}
+      - role-{{ item.role | replace('_','-') }}
   async: 7200
   poll: 0
   register: deploy
