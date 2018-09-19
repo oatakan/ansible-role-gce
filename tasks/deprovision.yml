@@ -17,6 +17,14 @@
 - pause:
     minutes: 2
 
+- name: debug deploy
+  debug:
+    var: deploy
+
+- name: debug deploy.results
+  debug:
+    var: deploy.results
+
 - name: test instance completion
   async_status: jid="{{ item.ansible_job_id }}"
   register: instances
