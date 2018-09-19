@@ -22,8 +22,8 @@
   register: instances
   loop: "{{ deploy.results }}"
 
-debug:
-  var: instances
+- debug:
+    var: instances
 
 #- name: wait for instance deletion to complete
 #  async_status: jid="{{ item.ansible_job_id }}"
