@@ -15,30 +15,18 @@
       - app-name-{{ item.app_name | replace('_','-') }}
       - role-{{ item.role | replace('_','-') }}
       - "{{ item.network_tag | replace('_','-') }}"
-  async: 7200
-  poll: 0
   register: deploy
   loop: "{{ nodes }}"
   when: nodes is defined
-
-- name: wait for instance creation to complete
-  async_status:
-    jid: "{{ item.ansible_job_id }}"
-  register: instances
-  until: instances.finished is not defined
-  retries: "{{ instance_wait_retry_limit }}"
-  delay: 10
-  loop: "{{ deploy.results }}"
-
 
 - name: waiting for server to come online
   wait_for:
     host: "{{ item.instance_data.public_ip }}"
     port: "{{ ansible_port }}"
     timeout: "{{ instance_wait_connection_timeout }}"
-  loop: "{{ instances.results }}"
+  loop: "{{ deploy.results }}"
   when:
-    - instances.results is defined
+    - deploy.results is defined
     - nodes is defined
     - item.instance_data is defined
     - item.instance_data.public_ip is defined
