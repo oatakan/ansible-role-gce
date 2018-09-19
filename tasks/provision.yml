@@ -21,6 +21,14 @@
   loop: "{{ nodes }}"
   when: nodes is defined
 
+- name: test instance completion
+  async_status: jid="{{ item.ansible_job_id }}"
+  register: instances1
+  loop: "{{ deploy.results }}"
+
+- debug:
+    var: instances1
+
 - pause:
     minutes: 1
 
