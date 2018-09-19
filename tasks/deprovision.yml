@@ -14,10 +14,21 @@
   loop: "{{ nodes }}"
   when: nodes is defined
 
-- name: wait for instance deletion to complete
+- pause:
+    minutes: 2
+
+- name: test instance completion
   async_status: jid="{{ item.ansible_job_id }}"
   register: instances
-  until: instances.finished is not defined
-  retries: "{{ instance_wait_retry_limit }}"
-  delay: 10
-  with_items: "{{ deploy.results }}"
+  loop: "{{ deploy.results }}"
+
+debug:
+  var: instances
+
+#- name: wait for instance deletion to complete
+#  async_status: jid="{{ item.ansible_job_id }}"
+#  register: instances
+#  until: instances.finished
+#  retries: "{{ instance_wait_retry_limit }}"
+#  delay: 10
+#  loop: "{{ deploy.results }}"
